@@ -1,20 +1,15 @@
-def getBondDuration(y, face, couponRate, m, ppy=1):
-    if ppy <= 0:
-        ppy = 1
-    r = y / ppy
-    n = int(m * ppy)
-    c = face * couponRate / ppy
-
+def getBondPrice_E(face, couponRate, yc):
     price = 0.0
-    for t in range(1, n):
-        price += c / ((1 + r) ** t)
-    price += (c + face) / ((1 + r) ** n)
+    n = len(yc)
+    coupon = face * couponRate
 
-    numer = 0.0
-    for t in range(1, n):
-        numer += t * (c / ((1 + r) ** t))
-    numer += n * ((c + face) / ((1 + r) ** n))
+    for i in range(n):
+        rate = yc[i]
+        cashflow = coupon
+        if i == n - 1:
+            cashflow += face
+        price += cashflow / ((1 + rate) ** (i + 1))
 
-    return (numer / price) / ppy
+    return price
 
 
